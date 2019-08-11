@@ -1,0 +1,22 @@
+<%- include('partials/header') %>
+
+
+<div class="jumbotron centered">
+  <div class="container">
+    <i class="fas fa-key fa-6x"></i>
+    <h1>Your Playlist</h1>
+    <p class="lead"></p>
+    <hr>
+    <!-- <a class="btn btn-light btn-lg" href="/register" role="button">Register</a>
+    <a class="btn btn-dark btn-lg" href="/login" role="button">Login</a> -->
+
+    <form class="artistsRate" action="/results" method="post">
+      <input type="text" name="femaleArtists" placeholder="female" value="">
+      <input type="text" name="maleArtists" placeholder="male" value="">
+      <button type="submit" name="">Submit</button>
+    </form>
+
+  </div>
+</div>
+
+<%- include('partials/footer') %>
