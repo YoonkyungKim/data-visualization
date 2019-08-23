@@ -13,11 +13,18 @@ app.use(bodyParser.urlencoded({extended: true}));
 // *** to link other files ex:css
 app.use(express.static("public"));
 
-mongoose.connect("mongodb://localhost:27017/userDB", {useNewUrlParser: true});
+mongoose.connect("mongodb://localhost:27017/playlistDB", {useNewUrlParser: true});
 mongoose.set("useCreateIndex", true);
 
-const females = [];
-const males = [];
+const playlistSchema = new mongoose.Schema ({
+  female: Number,
+  male: Number
+});
+
+const Playlist = new mongoose.model("Playlist", playlistSchema);
+
+// const females = [];
+// const males = [];
 
 function arrAve(arr){
   const ave = arr.reduce((a, b) => a + b, 0) / arr.length
@@ -29,7 +36,15 @@ app.get("/", function(req, res){
 });
 
 app.get("/results", function(req, res){
-  res.render("results", {femaleRate: females, maleRate: males});
+  Playlist.find({}, function(err, foundPlaylist){
+    if (foundPlaylist.length === 0){
+      console.log("Empty");
+      res.redirect("/")
+    } else {
+        res.render("results", {femaleRate: foundPlaylist.female, maleRate:foundPlaylist.male});
+    }
+  });
+
 });
 
 app.post("/", function(req, res){
@@ -37,15 +52,22 @@ app.post("/", function(req, res){
 });
 
 app.post("/results", function(req, res){
+
   const female = req.body.femaleArtists;
   const male = req.body.maleArtists;
 
-  females.push(female)
-  males.push(male)
+  const playlist = new Playlist ({
+    female: female,
+    male: male
+  });
 
+  playlist.save();
   res.redirect("/results");
 
-})
+  // females.push(female)
+  // males.push(male)
+
+});
 
 
 app.listen(3000, function() {
