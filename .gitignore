@@ -1,2 +1,3 @@
 age_collecting_by_crawling.ipynb
 .ipynb_checkpoints
+**/*.ipynb_checkpoints/
